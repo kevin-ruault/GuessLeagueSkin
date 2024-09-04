@@ -1,41 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { fetchChampions, getDetails } from "../utils/api.js";
+import "../styles/Game.css";
+import { getRandomChamp } from "../utils/features";
 
-function Game({ stateChanger, ...rest }) {
-  const [champions, setChampions] = useState([]);
-  const [error, setError] = useState(null);
+function Game({ stateIsPlayingChanger, champions }) {
+  const [champ, setChamp] = useState(null);
+  const [guess, setGuess] = useState("");
+
+  const getNewRandomChamp = () => {
+    setChamp(getRandomChamp(champions));
+  };
 
   useEffect(() => {
-    const apiUrl =
-      "https://ddragon.leagueoflegends.com/cdn/14.17.1/data/fr_FR/champion.json";
-
-    // Appeler la fonction fetchChampions importée
-    fetchChampions(apiUrl)
-      .then((json) => {
-        setChampions(getDetails(json.data));
-      })
-      .catch((error) => {
-        setError(error);
-      });
-  }, []);
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  console.log(champions);
+    if (!champ) {
+      getNewRandomChamp();
+    }
+  }, [champ]);
 
   return (
-    <div>
-      <button onClick={() => stateChanger(false)}>Retourner au menu</button>
-      <h1>League of Legends Champions</h1>
+    <div className="game">
+      <button onClick={() => stateIsPlayingChanger(false)}>
+        Retourner au menu
+      </button>
+      <h2>Quel champion a le splash art complet ?</h2>
+      {champ ? <img src={champ.splashart} /> : "Loading..."}
+      <p>Chaque essai dézoome un peu.</p>
+      <input
+        type="text"
+        value={guess}
+        onChange={(e) => setGuess(e.target.value)}
+      />
+      <button onClick={() => getNewRandomChamp()}>Recommencer</button>
+      {/*<h1>League of Legends Champions</h1>
       <ul>
         {champions.map((champion) => (
           <li key={champion.id}>
             <p>{champion.name}</p>
           </li>
         ))}
-      </ul>
+      </ul>*/}
     </div>
   );
 }
