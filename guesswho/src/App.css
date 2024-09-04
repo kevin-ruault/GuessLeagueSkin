@@ -1,0 +1,19 @@
+.App {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.App-header {
+  display: flex;
+  justify-content: center;
+}
+
+.App-header h1{
+  font-family: "Rubik Mono One", monospace;
+  color: rgb(0, 0, 0);
+  text-shadow: 0px -1px 0px rgb(177 177 177);
+  font-size: clamp(32px, 2em, 2rem);
+}
