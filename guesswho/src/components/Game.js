@@ -70,15 +70,19 @@ function Game({ stateIsPlayingChanger, champions }) {
           {guess !== "" && (
             <div className="champs-preview">
               <ul>
-                {remainingChamps.map((champion) => (
-                  <li
-                    key={champion.id}
-                    onClick={() => answerVerifier(champion.id)}
-                  >
-                    <img src={champion.image} />
-                    <p>{champion.name}</p>
-                  </li>
-                ))}
+                {remainingChamps
+                  .filter((champions) =>
+                    champions.name.match(new RegExp(guess, "i"))
+                  )
+                  .map((champion) => (
+                    <li
+                      key={champion.id}
+                      onClick={() => answerVerifier(champion.id)}
+                    >
+                      <img src={champion.image} />
+                      <p>{champion.name}</p>
+                    </li>
+                  ))}
               </ul>
             </div>
           )}
