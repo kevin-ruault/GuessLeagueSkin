@@ -1,12 +1,7 @@
 import React from "react";
 import "../styles/Home.css";
-import { getRandomChamp } from "../utils/features";
 
-function Home({ stateIsPlayingChanger, champions, stateSelectedChampChanger }) {
-  const handleClick = () => {
-    stateSelectedChampChanger(getRandomChamp(champions));
-  };
-
+function Home({ stateIsPlayingChanger }) {
   return (
     <div className="main-menu">
       <h2>
