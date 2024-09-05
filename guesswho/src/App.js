@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./components/Home.js";
 import Game from "./components/Game.js";
-import { fetchChampions } from "./utils/api.js";
+import { fetchApi } from "./utils/api.js";
 import { getDetails } from "./utils/scripts.js";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
       "https://ddragon.leagueoflegends.com/cdn/14.17.1/data/fr_FR/champion.json";
 
     // Appeler la fonction fetchChampions importée
-    fetchChampions(apiUrl)
+    fetchApi(apiUrl)
       .then((json) => {
         setChampions(getDetails(json.data));
       })

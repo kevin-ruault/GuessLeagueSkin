@@ -48,7 +48,7 @@ function Game({ stateIsPlayingChanger, champions }) {
       newRandomChamp();
     }
   }, [champ]);
-  console.log(splashartScale);
+
   return (
     <>
       <div className="game">
