@@ -39,12 +39,7 @@ function Game({ stateIsPlayingChanger, champions }) {
     } else {
       document.getElementById("focused").focus();
       let scale = splashartScale;
-      //let xPos = splashartXPos;
-      //let yPos = splashartYPos;
       if (scale > 2) setSplashartScale(scale - scale * 0.03);
-
-      //setSplashartXPos(xPos + 10);
-      //setSplashartYPos(yPos + 10);
     }
   };
 
