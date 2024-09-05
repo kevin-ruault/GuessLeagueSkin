@@ -20,6 +20,14 @@
   box-shadow: 2px 2px 4px rgba(177, 177, 177, 0.308);
 }
 
+.revealed{
+  transition: 1s;
+  width: 100%;
+  border-radius: 15px;
+  border: 2px solid #b85ec4;
+  box-shadow: 2px 2px 4px rgba(177, 177, 177, 0.308);
+}
+
 .game h2{
   font-size: 20px;
 }
@@ -45,13 +53,12 @@
 }
 
 .champs-preview {
-  background-color: green;
   position: absolute;
-  left: -75px;
-  top: 24px;
+  left: -95px;
+  top: 60px;
 }
 
-.champs-preview ul{
+.champs-preview ul, .answers ul{
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -77,8 +84,39 @@
   background-color: #6c4172;
 }
 
-.champs-preview li img {
+.champs-preview li img, .answers li img {
   width: auto;
   height: 80%;
   object-fit: contain;
+}
+
+.answers {
+  width: 300px;
+  margin-top: 24px;
+}
+
+.answers ul {
+  gap: 16px;
+  width: 300px;
+}
+
+.answers li {
+  display: flex;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  padding: 8px 16px;
+  padding-right: 0;
+  border: inset 1px goldenrod;
+  gap: 16px;
+  border-radius: 4px;
+}
+
+.champs-preview li p, .answers li p{
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.guess input {
+  height: 53px;
 }

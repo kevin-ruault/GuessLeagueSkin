@@ -10,10 +10,10 @@ function Game({ stateIsPlayingChanger, champions }) {
   const [remainingChamps, setRemainingChamps] = useState(champions);
 
   const newRandomChamp = () => {
+    setIsGuessed(false);
     setChamp(getRandomChamp(champions));
     setAnsweredChamps([]);
     setRemainingChamps(champions);
-    setIsGuessed(false);
     document.getElementById("focused").focus();
   };
 
@@ -49,7 +49,10 @@ function Game({ stateIsPlayingChanger, champions }) {
         </button>
         <h2>Quel champion a le splash art complet ?</h2>
         {champ ? (
-          <img className="splashart" src={champ.splashart} />
+          <img
+            className={isGuessed ? "revealed" : "splashart"}
+            src={champ.splashart}
+          />
         ) : (
           "Loading..."
         )}
@@ -59,9 +62,11 @@ function Game({ stateIsPlayingChanger, champions }) {
             id="focused"
             autoFocus
             type="text"
+            disabled={isGuessed ? true : false}
             value={guess}
             onChange={(e) => setGuess(e.target.value)}
           />
+
           {guess !== "" && (
             <div className="champs-preview">
               <ul>
@@ -83,20 +88,22 @@ function Game({ stateIsPlayingChanger, champions }) {
         )}
       </div>
       <div className="answers">
-        {answeredChamps.map((champion) => (
-          <li
-            style={
-              champion.name === champ.name
-                ? { backgroundColor: "green" }
-                : { backgroundColor: "red" }
-            }
-            key={champion.id}
-            onClick={() => answerVerifier(champion.id)}
-          >
-            <img src={champion.image} />
-            <p>{champion.name}</p>
-          </li>
-        ))}
+        <ul>
+          {answeredChamps.map((champion) => (
+            <li
+              style={
+                champion.name === champ.name
+                  ? { backgroundColor: "#108723" }
+                  : { backgroundColor: "#b72828" }
+              }
+              key={champion.id}
+              onClick={() => answerVerifier(champion.id)}
+            >
+              <img src={champion.image} />
+              <p>{champion.name}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
