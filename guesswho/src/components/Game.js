@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Game.css";
-import { getRandomChamp } from "../utils/features";
+import { getRandomChamp, getRandomNum } from "../utils/scripts";
 
 function Game({ stateIsPlayingChanger, champions }) {
   const [champ, setChamp] = useState(null);
@@ -8,6 +8,9 @@ function Game({ stateIsPlayingChanger, champions }) {
   const [isGuessed, setIsGuessed] = useState(false);
   const [answeredChamps, setAnsweredChamps] = useState([]);
   const [remainingChamps, setRemainingChamps] = useState(champions);
+  const [splashartXPos, setSplashartXPos] = useState(getRandomNum(-235, 60));
+  const [splashartYPos, setSplashartYPos] = useState(getRandomNum(-60, 60));
+  const [splashartScale, setSplashartScale] = useState(6);
 
   const newRandomChamp = () => {
     setIsGuessed(false);
@@ -15,6 +18,9 @@ function Game({ stateIsPlayingChanger, champions }) {
     setAnsweredChamps([]);
     setRemainingChamps(champions);
     document.getElementById("focused").focus();
+    setSplashartScale(6);
+    setSplashartXPos(getRandomNum(-235, 60));
+    setSplashartYPos(getRandomNum(-60, 60));
   };
 
   const answerVerifier = (id) => {
@@ -32,6 +38,13 @@ function Game({ stateIsPlayingChanger, champions }) {
       setIsGuessed(true);
     } else {
       document.getElementById("focused").focus();
+      let scale = splashartScale;
+      //let xPos = splashartXPos;
+      //let yPos = splashartYPos;
+      if (scale > 2) setSplashartScale(scale - scale * 0.03);
+
+      //setSplashartXPos(xPos + 10);
+      //setSplashartYPos(yPos + 10);
     }
   };
 
@@ -40,7 +53,7 @@ function Game({ stateIsPlayingChanger, champions }) {
       newRandomChamp();
     }
   }, [champ]);
-
+  console.log(splashartScale);
   return (
     <>
       <div className="game">
@@ -48,14 +61,22 @@ function Game({ stateIsPlayingChanger, champions }) {
           Retourner au menu
         </button>
         <h2>Quel champion a le splash art complet ?</h2>
-        {champ ? (
-          <img
-            className={isGuessed ? "revealed" : "splashart"}
-            src={champ.splashart}
-          />
-        ) : (
-          "Loading..."
-        )}
+        <div className="splashart-container">
+          {champ ? (
+            <img
+              className={isGuessed ? "revealed" : "splashart"}
+              src={champ.splashart}
+              style={{
+                objectPosition: `${isGuessed ? "0" : splashartXPos}px ${
+                  isGuessed ? "0" : splashartYPos
+                }px`,
+                transform: `scale(${isGuessed ? "1" : splashartScale})`,
+              }}
+            />
+          ) : (
+            "Loading..."
+          )}
+        </div>
         <p>Chaque essai dézoome un peu.</p>
         <div className="guess">
           <input
@@ -109,6 +130,7 @@ function Game({ stateIsPlayingChanger, champions }) {
           ))}
         </ul>
       </div>
+      <div style={{ width: "400px", height: "300px" }}></div>
     </>
   );
 }

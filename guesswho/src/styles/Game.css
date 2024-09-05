@@ -11,21 +11,24 @@
   color: aliceblue;
 }
 
-.splashart{
-  width: 60%;
-  aspect-ratio: 1/1;
-  object-fit: none;
-  border-radius: 15px;
+.splashart-container{
+  width: fit-content;
+  height: fit-content;
+  overflow: hidden;
+  border-radius: 8px;
   border: 2px solid #b85ec4;
   box-shadow: 2px 2px 4px rgba(177, 177, 177, 0.308);
 }
 
+.splashart {
+  width: 252px;
+  height: 252px;
+  object-fit: cover;
+}
+
 .revealed{
-  transition: 1s;
   width: 100%;
   border-radius: 15px;
-  border: 2px solid #b85ec4;
-  box-shadow: 2px 2px 4px rgba(177, 177, 177, 0.308);
 }
 
 .game h2{
@@ -56,6 +59,7 @@
   position: absolute;
   left: -95px;
   top: 60px;
+  width: 300px;
 }
 
 .champs-preview ul, .answers ul{
@@ -63,7 +67,7 @@
   flex-direction: column;
   margin: 0;
   padding: 0;
-  width: calc(100% + 100px);
+  width: 100%;
   border-radius: 4px;
 }
 

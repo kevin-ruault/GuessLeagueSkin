@@ -3,7 +3,7 @@ import "./App.css";
 import Home from "./components/Home.js";
 import Game from "./components/Game.js";
 import { fetchChampions } from "./utils/api.js";
-import { getDetails } from "./utils/features.js";
+import { getDetails } from "./utils/scripts.js";
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);

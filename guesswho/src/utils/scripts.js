@@ -20,7 +20,9 @@ export function getDetails(data) {
 }
 
 export function getRandomChamp(data) {
-  const randomElement = data[Math.floor(Math.random() * data.length)];
+  return data[Math.floor(Math.random() * data.length)];
+}
 
-  return randomElement;
+export function getRandomNum(min, max) {
+  return Math.random() * (max - min) + min;
 }
