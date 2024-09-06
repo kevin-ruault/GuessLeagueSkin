@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Game.css";
-import { getRandomChamp, getRandomNum } from "../utils/scripts";
+import { getRandomNum } from "../utils/scripts";
 import { fetchApi } from "../utils/api";
+import home from "../assets/home.png";
+import reload from "../assets/reload.png";
 
 function Game({ stateIsPlayingChanger, champions }) {
   const [champ, setChamp] = useState(null);
@@ -14,28 +16,38 @@ function Game({ stateIsPlayingChanger, champions }) {
   const [splashartScale, setSplashartScale] = useState(6);
 
   const newRandomChamp = () => {
+    setChamp(null);
     setIsGuessed(false);
     let selectedChamp = champions[Math.floor(Math.random() * champions.length)];
     fetchApi(
       `https://ddragon.leagueoflegends.com/cdn/14.17.1/data/fr_FR/champion/${selectedChamp.slug}.json`
     )
       .then((json) => {
-        let skins = json.data[selectedChamp.name].skins;
-        let newSplashart = skins[Math.floor(Math.random() * skins.length)];
-        let str = newSplashart.id.substr(4);
+        let skin =
+          json.data[selectedChamp.slug].skins[
+            Math.floor(
+              Math.random() * json.data[selectedChamp.slug].skins.length
+            )
+          ];
+        let str = skin.id.substr(skin.id.length - 2);
         if (str[0] === "0") str = str.substr(1);
-        selectedChamp.splashart = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${selectedChamp.slug}_${str}.jpg`;
+        selectedChamp.splashart = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${
+          selectedChamp.slug
+        }_${str ? str : "0"}.jpg`;
+        console.log(selectedChamp);
+      })
+      .then(() => {
         setChamp(selectedChamp);
       })
       .catch((error) => {
         console.log(error);
       });
+    document.getElementById("focused").focus();
     setAnsweredChamps([]);
     setRemainingChamps(champions);
-    document.getElementById("focused").focus();
     setSplashartScale(6);
-    setSplashartXPos(getRandomNum(-235, 60));
-    setSplashartYPos(getRandomNum(-60, 60));
+    setSplashartXPos(getRandomNum(-190, 18));
+    setSplashartYPos(getRandomNum(-16, 16));
   };
 
   const answerVerifier = (id) => {
@@ -54,7 +66,7 @@ function Game({ stateIsPlayingChanger, champions }) {
     } else {
       document.getElementById("focused").focus();
       let scale = splashartScale;
-      if (scale > 1.5) setSplashartScale(scale - scale * 0.04);
+      if (scale > 1.2) setSplashartScale(scale - scale * 0.06);
     }
   };
 
@@ -67,15 +79,21 @@ function Game({ stateIsPlayingChanger, champions }) {
   return (
     <>
       <div className="game">
-        <button onClick={() => stateIsPlayingChanger(false)}>
-          Retourner au menu
-        </button>
+        <div className="actions">
+          <img
+            src={home}
+            alt="home"
+            onClick={() => stateIsPlayingChanger(false)}
+          />
+          <img src={reload} alt="reload" onClick={() => newRandomChamp()} />
+        </div>
         <h2>Quel champion a le splash art complet ?</h2>
         <div className="splashart-container">
           {champ ? (
             <img
               className={isGuessed ? "revealed" : "splashart"}
               src={champ.splashart}
+              alt="splashart"
               style={{
                 objectPosition: `${isGuessed ? "0" : splashartXPos}px ${
                   isGuessed ? "0" : splashartYPos
@@ -92,6 +110,7 @@ function Game({ stateIsPlayingChanger, champions }) {
           <input
             id="focused"
             autoFocus
+            autocomplete="off"
             type="text"
             disabled={isGuessed ? true : false}
             value={guess}
@@ -110,7 +129,7 @@ function Game({ stateIsPlayingChanger, champions }) {
                       key={champion.id}
                       onClick={() => answerVerifier(champion.id)}
                     >
-                      <img src={champion.image} />
+                      <img src={champion.image} alt={champion.name} />
                       <p>{champion.name}</p>
                     </li>
                   ))}
@@ -134,7 +153,7 @@ function Game({ stateIsPlayingChanger, champions }) {
               key={champion.id}
               onClick={() => answerVerifier(champion.id)}
             >
-              <img src={champion.image} />
+              <img src={champion.image} alt={champion.name} />
               <p>{champion.name}</p>
             </li>
           ))}
