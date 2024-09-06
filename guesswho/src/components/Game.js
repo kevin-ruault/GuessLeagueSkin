@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Game.css";
 import { getRandomChamp, getRandomNum } from "../utils/scripts";
+import { fetchApi } from "../utils/api";
 
 function Game({ stateIsPlayingChanger, champions }) {
   const [champ, setChamp] = useState(null);
@@ -14,7 +15,24 @@ function Game({ stateIsPlayingChanger, champions }) {
 
   const newRandomChamp = () => {
     setIsGuessed(false);
-    setChamp(getRandomChamp(champions));
+    let selectedChamp = champions[Math.floor(Math.random() * champions.length)];
+    fetchApi(
+      `https://ddragon.leagueoflegends.com/cdn/14.17.1/data/fr_FR/champion/${selectedChamp.slug}.json`
+    )
+      .then((json) => {
+        let skins = json.data[selectedChamp.name].skins;
+        console.log(skins);
+        let newSplashart = skins[Math.floor(Math.random() * skins.length)];
+        console.log(newSplashart);
+        let str = newSplashart.id.substr(4);
+        console.log(str);
+        if (str[0] === "0") str = str.substr(1);
+        selectedChamp.splashart = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${selectedChamp.slug}_${str}.jpg`;
+        setChamp(selectedChamp);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setAnsweredChamps([]);
     setRemainingChamps(champions);
     document.getElementById("focused").focus();
@@ -39,7 +57,7 @@ function Game({ stateIsPlayingChanger, champions }) {
     } else {
       document.getElementById("focused").focus();
       let scale = splashartScale;
-      if (scale > 2) setSplashartScale(scale - scale * 0.03);
+      if (scale > 1.5) setSplashartScale(scale - scale * 0.04);
     }
   };
 
