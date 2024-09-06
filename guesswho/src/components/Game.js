@@ -21,11 +21,8 @@ function Game({ stateIsPlayingChanger, champions }) {
     )
       .then((json) => {
         let skins = json.data[selectedChamp.name].skins;
-        console.log(skins);
         let newSplashart = skins[Math.floor(Math.random() * skins.length)];
-        console.log(newSplashart);
         let str = newSplashart.id.substr(4);
-        console.log(str);
         if (str[0] === "0") str = str.substr(1);
         selectedChamp.splashart = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${selectedChamp.slug}_${str}.jpg`;
         setChamp(selectedChamp);
